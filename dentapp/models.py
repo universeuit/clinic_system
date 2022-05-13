@@ -43,6 +43,7 @@ class MembershipPlan(models.Model):
     def __str__(self):
         return self.title
 
+
 class MembershipBannerImage(models.Model):
     membership_plans  = models.ForeignKey(MembershipPlan, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='MembershipImg')

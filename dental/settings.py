@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'dentapp',
     'ckeditor',
     'ckeditor_uploader',
-    'doctordetails',
 ]
 
 MIDDLEWARE = [

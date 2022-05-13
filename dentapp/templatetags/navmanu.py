@@ -1,5 +1,6 @@
 from django import template
 from dentapp.models import *
+import bangla
 
 register = template.Library()
 
@@ -14,4 +15,6 @@ def membership_plans(request):
 
 @register.filter()
 def patientsafety(request):
-    return PatientSafety.objects.all() 
+    return PatientSafety.objects.all()
+
+

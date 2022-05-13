@@ -1,15 +1,20 @@
+from time import timezone
 from django.shortcuts import render
 from .models import *
+from django.utils import timezone
 # Create your views here.
-
 def index(request):
-    context ={  
+
+    context ={
     }
     return render(request, 'index.html', context)
 
 
 def treatment(request):
     return render(request, 'treatment.html')
+
+def appointment(request):
+    return render(request, 'appointment.html')
 
 def treatmentDetails(request,slug):
     treatments = Treatment.objects.get(slug=slug)
@@ -33,3 +38,14 @@ def MembershipPlansDetails(request,slug):
     }
     
     return render(request, 'membershipplansdetails.html',context )
+
+def PatientSafetyDetails(request,slug):
+    patientsafety = PatientSafety.objects.get(slug=slug)
+    date = timezone.now()
+    context ={
+        'patientsafety':patientsafety,
+        'date':date,
+    }
+    print(date)
+    
+    return render(request, 'patientsafety.html',context )
