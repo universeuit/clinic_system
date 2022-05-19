@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'dentapp',
     'ckeditor',
     'ckeditor_uploader',
+    'appointments',
 ]
 
 MIDDLEWARE = [

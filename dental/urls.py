@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('dentapp.urls')),
+    path('appointments/', include('appointments.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 

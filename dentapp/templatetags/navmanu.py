@@ -1,6 +1,5 @@
 from django import template
 from dentapp.models import *
-import bangla
 
 register = template.Library()
 

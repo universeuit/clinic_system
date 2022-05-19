@@ -13,9 +13,6 @@ def index(request):
 def treatment(request):
     return render(request, 'treatment.html')
 
-def appointment(request):
-    return render(request, 'appointment.html')
-
 def treatmentDetails(request,slug):
     treatments = Treatment.objects.get(slug=slug)
     treatmentImageGallery = TreatmentImageGallery.objects.filter(treatment=treatments)
