@@ -4,3 +4,5 @@ from .models import *
 
 admin.site.register(Depertment)
 admin.site.register(Doctorprofile)
+
+admin.site.register(Patientschedule)

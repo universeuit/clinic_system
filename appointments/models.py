@@ -66,3 +66,16 @@ class Doctorprofile(models.Model):
 
     def __str__(self):
         return self.doctor_name
+
+class Patientschedule(models.Model):
+    dept_id = models.IntegerField()
+    doc_id = models.IntegerField()
+    date_value = models.CharField(max_length = 10)
+    timeslotset = models.CharField(max_length = 10)
+    phone = models.CharField(max_length = 15)
+    fullname = models.CharField(max_length = 100)
+    email = models.EmailField(blank=True, null=True)
+    message = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.doc_id)

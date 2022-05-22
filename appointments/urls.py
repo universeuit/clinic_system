@@ -7,4 +7,5 @@ urlpatterns = [
     path('docshowbydept/', docshowbydept, name='docshowbydept'),
     path('docshowbydept2/', docshowbydept2, name='docshowbydept2'),
     path('docshowbydept3/', docshowbydept3, name='docshowbydept3'),
+    path('docshowbydept4/', docshowbydept4, name='docshowbydept4'),
 ]

@@ -137,14 +137,15 @@ def docshowbydept3(request):
 
     time_slot = []
 
-    while enter_delta <= exit_delta:
-        # print("The train will leave at {} tomorrow".format(enter_delta.strftime('%H:%M')))
-        print(enter_delta)
-        time_slot.append(enter_delta)
-        # time_slot_ls = datetime.time(x for x in time_slot)
-        # print(time_slot_ls)
+    if weekly_date_flag is True:
+        while enter_delta <= exit_delta:
+            # print("The train will leave at {} tomorrow".format(enter_delta.strftime('%H:%M')))
+            print(enter_delta)
+            time_slot.append(enter_delta)
+            # time_slot_ls = datetime.time(x for x in time_slot)
+            # print(time_slot_ls)
 
-        enter_delta += timedelta(minutes=avg_duration_min)
+            enter_delta += timedelta(minutes=avg_duration_min)
 
     time_slot_12 = []
     for i in range(len(time_slot)):
@@ -162,14 +163,69 @@ def docshowbydept3(request):
     # time_slot_dict=zip(time_slot_12,time_slot_12_2)
 
     # time_slot_dict = dict(time_slot_dict)
+    date_value = request.session.get('date_value')
+
+    date_value_query = Patientschedule.objects.filter(doc_id=doc_id).values('date_value')
+
+    date_value_query = list(date_value_query)
+
+    print('date_value_query',date_value_query)
+
+    date_value_query_main_ls = []
+    
+    for i in date_value_query:
+        date_value_query_main_ls.append(i['date_value'])
+
+    print('time_slot_12_query_main_ls',date_value_query_main_ls)
+
+
+
+
+    time_slot_12_query = Patientschedule.objects.filter(doc_id=doc_id).values('timeslotset')
+
+    time_slot_12_query = list(time_slot_12_query)
+    # time_slot_12_query = time_slot_12_query[0]
+    # time_slot_12_query = time_slot_12_query['timeslotset']
+
+    print('time_slot_12_query',time_slot_12_query)
+
+    time_slot_12_main_ls = []
+
+    for i in time_slot_12_query:
+        time_slot_12_main_ls.append(i['timeslotset'])
+
+    
+
+    time_slot_12_main = []
+
+    if date_value in date_value_query_main_ls:
+        for i in time_slot_12:
+            if i not in time_slot_12_main_ls:
+                time_slot_12_main.append(i)
+    else:
+        for i in time_slot_12:
+            if i not in time_slot_12_main_ls:
+                time_slot_12_main.append(i)
 
     print(time_slot_12)
+    print('time_slot_12_main',time_slot_12_main)
 
     # time_slot_dict = serializers.serialize('json', time_slot_dict)
     # print(time_slot_12)
 
-    return JsonResponse(time_slot_12, safe=False)
+    return JsonResponse(time_slot_12_main, safe=False)
 
+@csrf_exempt
+def docshowbydept4(request):
+    timeslotset = request.POST.get('timeslotset')
+
+    print('timeslotset', timeslotset)
+
+    request.session['timeslotset'] = timeslotset
+
+    # docname1 = serializers.serialize('json', doc_name)
+
+    return JsonResponse(timeslotset, safe=False)
 
 
     # docname1 = serializers.serialize('json', doc_name)
@@ -212,20 +268,40 @@ def appointment(request):
     dept_id = request.session.get('dept_id')
     doc_id = request.session.get('doc_id')
 
+    timeslotset = request.session.get('timeslotset')
+
+    date_value = request.session.get('date_value')
+
+    phone = request.POST.get('phone')
+    fullname = request.POST.get('fullname')
+    email = request.POST.get('email')
+    message = request.POST.get('message')
+
+
     # doctor_list_ls = request.session.get('doctor_list_ls')
 
     print('dept_id', dept_id)
     print('doc_id index1', doc_id)
+    print('timeslotset index1', timeslotset)
+    print('timeslotset index1', type(timeslotset))
+    print('date_value',date_value)
 
     print('next2')
 
     print(dept_id)
     print(type(dept_id))
 
+    success_message = ''
+
     if dept_id is not None:
         dept_id = int(dept_id)
         print(type(dept_id))
         print(dept_id)
+        if fullname is not None and phone is not None:
+
+            user = Patientschedule(dept_id=dept_id, doc_id=doc_id, date_value=date_value, timeslotset=timeslotset, phone=phone, fullname=fullname, email=email, message=message)
+            user.save()
+            success_message = 'Successfully Submitted'
             # return redirect('index2')
 
     # doctor_list = Doctorprofile.objects.all()
@@ -247,6 +323,7 @@ def appointment(request):
 
     context = {
         'departments': departments,
+        'success_message':success_message,
     }
     return render(request, 'appoinments/appoinment.html', context)
 

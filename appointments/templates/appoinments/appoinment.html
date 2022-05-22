@@ -17,6 +17,7 @@
 		<div align="center" style="color:#008A00;font-size:17px;font-weight: bold;">
 		</div>
 			
+    <p>{{success_message}}</p>
 		
 		<h3 data-appear-animation="fadeInDown" data-appear-animation-delay="10">Book an Appointment: </h3>
 				<form action="{% url 'appointment' %}" method="POST" enctype="multipart/form-data" id="newuserfrom">
@@ -64,8 +65,8 @@
 							{% comment %} <input type="text" name="app_date" value="" id="datetimepicker3" required class="input_datetext"> {% endcomment %}
 						</div>
 					</div>
-					<div class="mb-3" id="time">
-
+					<div class="row select_locate_area" id="time">
+            
 					</div>
 				</div>
 				<div class="appointment_stepbox step_disable" id="frmshow">
@@ -73,16 +74,17 @@
 						<div class="step_point">3</div>
 						<h2>Personal Details</h2>
 						<div class="personal_detail_content">
-							<div class="row2"><input type="text" name="phone" class="input_box" value="" placeholder="Mobile Number*" id="phone" maxlength="10" minlength="10">
-																<p class="error-n error-c" id="app_error1"></p>
+							<div class="row2">
+                <input type="text" name="phone" class="input_box" value="" placeholder="Mobile Number*" id="phone" required>
+								<p class="error-n error-c" id="app_error1"></p>
 							</div>
-							<div class="row2"><input type="text" name="fullname" class="input_box" value="" placeholder="Full Name*" id="name_id">
+							<div class="row2"><input type="text" name="fullname" class="input_box" value="" placeholder="Full Name*" id="name_id" required>
 								<p class="error-n error-c" id="app_error2"></p>
 							</div>
 							<div class="row2"><input type="text" name="email" class="input_box right" value="" placeholder="Email Id" id="email_id">
 								<p class="error-n error-c" id="app_error3"></p>
 							</div>
-														<textarea class="textarea_box" name="message" placeholder="Type Text Message"></textarea>
+							<textarea class="textarea_box" name="message" placeholder="Type Text Message"></textarea>
 							<div class="appointment_capchacode">
 								<input id="cap_Code" name="cap_Code" type="text" class="input_box capcha_input">
 								<img id="captcha_code1" src="https://clovedental.in/captcha/captchaCode.php?id=1" alt="Captcha"/>
@@ -119,7 +121,9 @@
 <script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
       var calendar = document.getElementById("datepick");
+      var patientname = document.getElementById("frmshow");
       calendar.style.display = ""
+      patientname.style.display = ""
 
       function x(){
 
@@ -174,7 +178,7 @@
 
         document.getElementById("docoptionid").innerHTML = `
             <select class="select_box select" name="loc" id="state_id" onChange="s_doc()" aria-label="">
-                  <option selected>...</option>
+                  <option selected>Select Doctor</option>
                       ${strs22}
                     </select>
                     `;
@@ -228,10 +232,46 @@
         var time_prod = response;
 
         console.log('time_prod')
-        console.log(time_prod[0])
-        document.getElementById("time").innerHTML = `${time_prod[0]}`
+        console.log(typeof time_prod)
+        console.log(time_prod.length)
+        var time_prod_len = time_prod.length;
+        var time_prod_strs22 = "";
+
+        for(var i=0;i<time_prod_len;i++){
+          var time_slot_store = time_prod[i]
+
+          time_prod_strs22=time_prod_strs22+`<option id='docnameid' value='${time_slot_store}'>${time_slot_store}</option>`
+
+        }
+
+        document.getElementById("time").innerHTML = `
+            <select class="form-select select_box select" name="timeslotpick" id="timeslotid" onChange="timeslotset()" aria-label="">
+                  <option selected>Select Time Slot</option>
+                      ${time_prod_strs22}
+                    </select>
+                    `;
     })
     
+  }
+
+  function timeslotset(){
+    var timeslotset = document.getElementById("timeslotid").value;
+    console.log('timeslotset');
+    console.log(timeslotset);
+
+    jQuery.ajax({
+      url: "{% url 'docshowbydept4' %}",
+      type: "POST",
+      data: {timeslotset:timeslotset},
+
+    })
+
+    if (timeslotset !== null && timeslotset !== undefined){
+      patientname.style.display = '';
+      patientname.classList.remove("step_disable");
+    }else{
+      patientname.style.display = '';
+    }
   }
 
     </script>
