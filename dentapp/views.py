@@ -2,10 +2,12 @@ from time import timezone
 from django.shortcuts import render
 from .models import *
 from django.utils import timezone
+from appointments.models import *
 # Create your views here.
 def index(request):
-
+    doctor_profile = Doctorprofile.objects.all()
     context ={
+        'doctor_profile':doctor_profile,
     }
     return render(request, 'index.html', context)
 

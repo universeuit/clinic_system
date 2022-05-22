@@ -15,6 +15,7 @@ class Depertment(models.Model):
 	
 class Doctorprofile(models.Model):
     doctor_name = models.CharField(max_length = 150)
+    image = models.ImageField(default='doctorprofile/default.jpg', upload_to='doctorprofile')
     degree = models.CharField(max_length = 100)
     avg_duration_min = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])
     avg_load_per_day = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])

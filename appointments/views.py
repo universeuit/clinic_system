@@ -165,47 +165,71 @@ def docshowbydept3(request):
     # time_slot_dict = dict(time_slot_dict)
     date_value = request.session.get('date_value')
 
-    date_value_query = Patientschedule.objects.filter(doc_id=doc_id).values('date_value')
-
-    date_value_query = list(date_value_query)
-
-    print('date_value_query',date_value_query)
-
-    date_value_query_main_ls = []
+    # find pk start
+    date_value_time_query = Patientschedule.objects.filter(doc_id=doc_id).values('date_value','timeslotset')
+    date_value_time_query = list(date_value_time_query)
+    # date_value_time_query_specific = len(date_value_time_query)
+    date_value_already_timeslot = []
+    for i in date_value_time_query:
+        if date_value == i['date_value']:
+            date_value_already_timeslot.append(i['timeslotset'])
     
-    for i in date_value_query:
-        date_value_query_main_ls.append(i['date_value'])
+    print('date_value_already',date_value_already_timeslot)
+        
+    # date_value_query_pk_ls = []
+    
+    # for i in date_value_query_pk:
+    #     date_value_query_pk_ls.append(i['id'])
+    
+    # date_value_query_full = Patientschedule.objects.get()
+    # print('date_value_time_query_specific',date_value_time_query_specific)
 
-    print('time_slot_12_query_main_ls',date_value_query_main_ls)
+    # find pk end
+
+
+    # date_value_query = Patientschedule.objects.filter(doc_id=doc_id).values('date_value')
+
+    # date_value_query = list(date_value_query)
+
+    # print('date_value_query',date_value_query)
+
+
+
+    # date_value_query_main_ls = []
+    
+    # for i in date_value_query:
+    #     date_value_query_main_ls.append(i['date_value'])
+
+    # print('time_slot_12_query_main_ls',date_value_query_main_ls)
 
 
 
 
-    time_slot_12_query = Patientschedule.objects.filter(doc_id=doc_id).values('timeslotset')
+    # time_slot_12_query = Patientschedule.objects.filter(doc_id=doc_id).values('timeslotset')
 
-    time_slot_12_query = list(time_slot_12_query)
+    # time_slot_12_query = list(time_slot_12_query)
     # time_slot_12_query = time_slot_12_query[0]
     # time_slot_12_query = time_slot_12_query['timeslotset']
 
-    print('time_slot_12_query',time_slot_12_query)
+    # print('time_slot_12_query',time_slot_12_query)
 
-    time_slot_12_main_ls = []
+    # time_slot_12_main_ls = []
 
-    for i in time_slot_12_query:
-        time_slot_12_main_ls.append(i['timeslotset'])
+    # for i in time_slot_12_query:
+    #     time_slot_12_main_ls.append(i['timeslotset'])
 
     
 
     time_slot_12_main = []
 
-    if date_value in date_value_query_main_ls:
-        for i in time_slot_12:
-            if i not in time_slot_12_main_ls:
-                time_slot_12_main.append(i)
-    else:
-        for i in time_slot_12:
-            if i not in time_slot_12_main_ls:
-                time_slot_12_main.append(i)
+
+    for i in time_slot_12:
+        if i not in date_value_already_timeslot:
+            time_slot_12_main.append(i)
+    # else:
+    #     for i in time_slot_12:
+    #         if i not in time_slot_12_main_ls:
+    #             time_slot_12_main.append(i)
 
     print(time_slot_12)
     print('time_slot_12_main',time_slot_12_main)

@@ -60,7 +60,7 @@
 						<div class="step_point">2</div>
 						<h2>Select Date &amp; Time</h2>
 						<div class="row">
-							<input type="date" name="app_date" value="" id="datetimepicker3" onChange="fcalendar()" required class="input_datetext">
+							<input type="date" max="2022-06-22" name="app_date" value="" id="datetimepicker3" onChange="fcalendar()" required class="input_datetext">
 							{% comment %} <input class="form-control" type="date" id="calendar_main" name="calendar_date" onChange="fcalendar()"> {% endcomment %}
 							{% comment %} <input type="text" name="app_date" value="" id="datetimepicker3" required class="input_datetext"> {% endcomment %}
 						</div>
@@ -204,7 +204,7 @@
 
         if (doc_id !== null && doc_id !== undefined){
           calendar.style.display = '';
-		  calendar.classList.remove("step_disable");
+		      calendar.classList.remove("step_disable");
         }else{
           calendar.style.display = '';
         }
